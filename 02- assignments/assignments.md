@@ -2,7 +2,9 @@
 
 > **实验人:** 智能 212 史胤隆 | **指导教师:** 余乐
 
-- **tb_my_buf.sv**
+阻塞赋值是指在赋值结束之后才能进入下一步的赋值；非阻塞赋值指赋值开始后不等待完成即进入下一步。在代码上的体现是，阻塞赋值顺序发生，非阻塞赋值并发发生；在硬件上的体现是，阻塞赋值往往使用连续排列元件，非阻塞赋值往往使用并列排列元件。接下来我们通过仿真来体现两者区别。
+
+- **assignments.sv**
 
   ```systemverilog
   `timescale 1ns/1ns
@@ -13,21 +15,18 @@
           b = #2  1'b0;   //time 12
           c = #4  1'b1;   //time 16
       end
-    initial begin
+      initial begin
           d <= #10 1'b1;  // time 10
           e <= #2  1'b0;  // time 2
           f <= #4  1'b1;  //time 4
       end
       initial begin
-        $monitor ($time, , "a=%b b=%b c=%b d=%b e=%b f=%b",
+          $monitor ($time, , "a=%b b=%b c=%b d=%b e=%b f=%b",
                     a, b, c, d,e, f);
           #100 $stop;
       end
   endmodule
-
   ```
-
-- 控制台输出
 
   ```text
   #                    0 a=x b=x c=x d=x e=x f=x
@@ -40,4 +39,4 @@
 
 - 输出波形
 
-  ![01](./01.png)
+  <img src="./01.png" alt="01" style="zoom:12.5%;" />
